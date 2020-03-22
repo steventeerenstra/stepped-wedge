@@ -1,2 +1,2 @@
 # stepped-wedge
-Stepped wedge desings
+Stepped wedge designs
