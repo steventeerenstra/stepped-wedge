@@ -9,6 +9,8 @@ do N=20; *number of subjects per cluster;
 do	rho = 0.1;
 do mu =0.22;
 do mu_r= 0.132;	
+	* the below comes down to H&H choice, so sigma2_s=mu*(1-mu) (or mu=(mu+mu_r)/2), and sigma2_c=( rho/(1-rho) ) *sigma2_s;
+	* alternative would be to take sigma2_tot=sigma2_c+sigma_2_s=mu*(1-mu) and sigma2_c= rho* sigma2_tot, sigma2_s=(1-rho)*sigma2_tot;  
 	sigma2=mu*(1-mu) / N;
 	tau2=( rho/(1-rho) ) * mu*(1-mu);
 	theta=mu-mu_r; * the effect;
