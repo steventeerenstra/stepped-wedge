@@ -135,6 +135,7 @@ data &data_sim;
 						group=cluster; * one cluster per group1=0;
 						* treatment effect;
 						trt= 1*(time >= group+ 1); 
+						* continuous outcome;
 						hypo=0; &outcome  =  time_effect{time}+ random; output;* H0;
 						hypo=1; &outcome  =  time_effect{time}+ random + trt*&delta_trt; output; *H1;
 					end;
