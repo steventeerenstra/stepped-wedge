@@ -151,6 +151,7 @@ data &data_sim;
 						time_class=time; * class variable to indicate random time effect;
 
 						* this is the random part of the effect to investigate how well the correlations (ICC, auto-subject/cluster correlations) are described;
+						* binary outcome, thus: ** res_subject_time= residual** is not part of random effect;
 						random= +sqrt(sigma2_c)*res_cluster + sqrt(sigma2_ct)*res_cluster_time
 											 +sqrt(sigma2_s)*res_subject ;
 
@@ -159,12 +160,12 @@ data &data_sim;
 						group=cluster;  
 						* treatment effect; 
 						trt= 1*(time >= 2*group +3);
-						* time_effect + random (+ trt*&delta_trt) is the probability of success (varies over time for a subject);
-						* we use that res_subject_time=X ~ N(0,1), so probalitity that [probnorm(X) < p] is exactly p; 
-						* could also use that the probability that [X < probit(p)] is exactly p, but probit has boundary
-						  issues around 0 and 1; 						
-						* note that if u= time_effect + random (+ trt*&delta_trt) > 1, then (probnorm(X) < u)=1 in SAS;
-                        * and that if u < 0 then (probnorm(X) < u ) = 0 in SAS, so we need not worry about 
+						* binary outcome;
+						* p := time_effect + random (+ trt*&delta_trt) is the probability of success (varies over time for a subject);
+						* we use that X:= res_subject_time ~ N(0,1), so probalitity that [probnorm(X) < p] is exactly p; 
+						* could also use that the probability that [X < probit(p)] is exactly p, but probit has boundary issues around 0 and 1; 						
+						* note that if u= time_effect + random (+ trt*&delta_trt) > 1, then the logical statement (probnorm(X) < u) equals 1 in SAS;
+                        			* and that if u < 0 then (probnorm(X) < u ) = 0 in SAS, so we need not worry about 
 						* time_effect + random (+ trt*&delta_trt) to be >=0 and <=1 to represent a probability; 
 						hypo=0; &outcome = ( probnorm(res_subject_time) < time_effect{time} + random  ) ; output;
 						hypo=1; &outcome = ( probnorm(res_subject_time) < time_effect{time}+ random + trt*&delta_trt);output; *H1;
