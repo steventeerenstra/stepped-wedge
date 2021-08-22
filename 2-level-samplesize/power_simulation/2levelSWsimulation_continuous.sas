@@ -128,6 +128,7 @@ data &data_sim;
 						time_class=time; * class variable to indicate random time effect;
 
 						* this is the random part of the effect to investigate how well the correlations (ICC, auto-subject/cluster correlations) are described;
+						* continuous outcome, thus: ***res_subject_time = residual*** is part of random effect;
 						random= +sqrt(sigma2_c)*res_cluster + sqrt(sigma2_ct)*res_cluster_time
 											 +sqrt(sigma2_s)*res_subject + sqrt(sigma2_st)*res_subject_time;
 
