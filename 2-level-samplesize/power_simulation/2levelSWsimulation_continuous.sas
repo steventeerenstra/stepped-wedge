@@ -422,7 +422,12 @@ run;
 
 %explore_configs(ds_config=configs, data_time_effects=_time_effects);
 
-
+title "check number of patients";
+proc freq data=_outcomes(where=(sim=1)); table group*time /nocol norow nopercent missing;run;
+title "check treatment allocation";
+proc tabulate data=_outcomes(where=(sim=1)); class group time; var trt;
+table group, time*(trt=' ')*(mean=' ');
+run;
 
 
 
