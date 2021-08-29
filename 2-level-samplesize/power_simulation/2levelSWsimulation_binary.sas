@@ -455,10 +455,13 @@ run;
 
 %explore_configs(ds_config=configs, data_time_effects=_time_effects);
 
-/*
-proc sort data=_outcomes; by trt;run;
-proc means n mean data=_outcomes; var y; where hypo=1; by trt;run;
-*
+
+title "check number of patients";
+proc freq data=_outcomes(where=(sim=1)); table group*time /nocol norow nopercent missing;run;
+title "check treatment allocation";
+proc tabulate data=_outcomes(where=(sim=1)); class group time; var trt;
+table group, time*(trt=' ')*(mean=' ');
+run;
 
 
 
