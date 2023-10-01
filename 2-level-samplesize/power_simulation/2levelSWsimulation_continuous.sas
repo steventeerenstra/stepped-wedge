@@ -146,7 +146,11 @@ data &data_sim;
 run;
 
 * missing data due to design (i.e., implementation period);
-
+	/** example
+	data &data_sim; set &data_sim;
+	if (time <= (group -2)) then delete; * only at most two measurement before the intervention are allowed;
+	run;
+	**/
 
 /*** finalization ****************************************************************/
 
@@ -422,12 +426,20 @@ run;
 
 %explore_configs(ds_config=configs, data_time_effects=_time_effects);
 
-title "check number of patients";
-proc freq data=_outcomes(where=(sim=1)); table group*time /nocol norow nopercent missing;run;
-title "check treatment allocation";
-proc tabulate data=_outcomes(where=(sim=1)); class group time; var trt;
-table group, time*(trt=' ')*(mean=' ');
+
+title "check: number of subjects (with non-missing outcome) per cluster-period";
+proc tabulate data=_outcomes(where=(sim=1 and hypo=0)); class group cluster time; var y;
+table group*cluster, time*y*n;
 run;
+title "check: treatment assignment per cluster-period (with group)";
+proc tabulate data=_outcomes(where=(sim=1 and hypo=0)); class group cluster time; var trt;
+table group*cluster, time*trt*mean*f=3.0;
+run;
+title "check: mean outcome per cluster-period";
+proc tabulate data=_outcomes(where=(sim=1 and hypo=0)); class group cluster time; var y;
+table group*cluster, time*y*mean;
+run;
+
 
 
 
